@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/jmcarbo/statik/internal/token"
 	"html/template"
 	"log"
 	"os"
@@ -70,12 +71,14 @@ func main() {
 				}
 				log.Printf("Template path %s", templatePath)
 
+				auth := c.Get("Authorization")
 				// Data to pass to the template, including headers
 				data := fiber.Map{
 					"Headers": c.GetReqHeaders(),
 					"Method":  c.Method(),
 					"Path":    c.Path(),
 					"Query":   c.OriginalURL(),
+					"Token":   token.GetToken(auth),
 				}
 
 				// Render the template

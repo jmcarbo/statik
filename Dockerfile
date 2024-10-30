@@ -20,6 +20,8 @@ RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH GO111MODULE=on go build -a -
 FROM --platform=$TARGETPLATFORM scratch
 LABEL org.opencontainers.image.source=https://github.com/jmcarbo/statik
 
+PORT=3000
+
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /statik ./
 ENTRYPOINT ["./statik"]
