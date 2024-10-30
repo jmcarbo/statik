@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>Example</title>
+</head>
+<body>
+    <h1>Example</h1>
+    <p>Example page</p>
+    <h2>Links</h2>
+    <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+    </ul>
+    <h2>Headeers</h2>
+    <ul>
+        {{ range $k, $v := .Headers}}
+        <li>{{$k}} = {{$v}}</li>
+        {{end}}
+    </ul>
+
+    {{ if (len (index .Headers "Host2")) }}
+        {{ index (.Headers.Host) 0 }}
+    {{ end }}
+
+asdf
+    <script src="/js/a.js"></script>
+</body>
+</html>
