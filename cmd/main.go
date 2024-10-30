@@ -71,14 +71,19 @@ func main() {
 				}
 				log.Printf("Template path %s", templatePath)
 
-				auth := c.Get("Authorization")
+				auth, ok := c.GetReqHeaders()["Authorization"]
+				authStr := ""
+				if ok {
+					authStr = auth[0]
+				}
+
 				// Data to pass to the template, including headers
 				data := fiber.Map{
 					"Headers": c.GetReqHeaders(),
 					"Method":  c.Method(),
 					"Path":    c.Path(),
 					"Query":   c.OriginalURL(),
-					"Token":   token.GetToken(auth),
+					"Token":   token.GetToken(authStr),
 				}
 
 				// Render the template
