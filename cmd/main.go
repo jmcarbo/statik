@@ -6,6 +6,7 @@ import (
 	"github.com/jmcarbo/statik/internal/token"
 	"html/template"
 	"log"
+	"mime"
 	"os"
 	"path/filepath"
 	"strings"
@@ -17,6 +18,20 @@ import (
 var (
 	ADir = flag.String("dir", "public", "directory to serve")
 )
+
+func init() {
+	mimeTypes := map[string]string{
+		".ts":   "application/typescript",
+		".tsx":  "application/typescript",
+		".d.ts": "application/typescript",
+	}
+
+	for ext, mimeType := range mimeTypes {
+		if err := mime.AddExtensionType(ext, mimeType); err != nil {
+			log.Fatalf("Error adding MIME type for %s: %v", ext, err)
+		}
+	}
+}
 
 func main() {
 	// Configuration variable for the static directory
