@@ -17,6 +17,7 @@ import (
 
 var (
 	ADir = flag.String("dir", "public", "directory to serve")
+	SPA  = flag.Bool("spa", false, "single page application mode")
 )
 
 func init() {
@@ -120,6 +121,14 @@ func main() {
 			} else {
 				// Serve static file
 				return c.SendFile("./"+filePath, true)
+			}
+		}
+
+		if *SPA {
+			// Serve index.html for SPA
+			filePath = filepath.Join(staticDir, "index.html")
+			if _, err := os.Stat(filePath); err == nil {
+				return fiber.ErrNotFound
 			}
 		}
 

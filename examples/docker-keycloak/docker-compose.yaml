@@ -46,7 +46,7 @@ services:
       - ./keycloak-realms:/opt/keycloak/data/import
 
   statik:
-    image: ghcr.io/jmcarbo/statik:0.0.5
+    image: ghcr.io/jmcarbo/statik:0.0.6
     ports:
       - "3000:3000"
     labels:
