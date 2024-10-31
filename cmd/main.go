@@ -126,6 +126,7 @@ func main() {
 
 		if *SPA {
 			// Serve index.html for SPA
+			log.Printf("Serving index.html for SPA %s", filePath)
 			filePath = filepath.Join(staticDir, "index.html")
 			if _, err := os.Stat(filePath); err == nil {
 				return fiber.ErrNotFound
