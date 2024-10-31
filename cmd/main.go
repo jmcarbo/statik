@@ -42,6 +42,11 @@ func main() {
 		staticDir = dir
 	}
 	flag.Parse()
+
+	if *SPA {
+		log.Println("Single Page Application mode enabled")
+	}
+
 	if *ADir != "" {
 		staticDir = *ADir
 	}
@@ -112,11 +117,12 @@ func main() {
 			}
 		}
 
+		log.Printf("File not found %s", filePath)
 		if *SPA {
 			// Serve index.html for SPA
 
 			filePath = filepath.Join(staticDir, "index.html")
-			if _, err := os.Stat(filePath); err == nil {
+			if _, err := os.Stat(filePath); err != nil {
 				return fiber.ErrNotFound
 			}
 			log.Printf("Serving index.html for SPA %s", filePath)
