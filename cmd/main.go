@@ -18,7 +18,7 @@ import (
 var (
 	ADir        = flag.String("dir", "public", "directory to serve")
 	SPA         = flag.Bool("spa", false, "single page application mode")
-	MultiTenant = flag.Bool("multi-tenant", false, "multi tenant mode")
+	MultiTenant = flag.Bool("multitenant", false, "multi tenant mode")
 )
 
 func init() {
@@ -41,7 +41,7 @@ func getTenantPath(path string) string {
 
 	// If the path has at least 2 parts, the first part is the tenant
 	if len(parts) >= 1 {
-		return filepath.Join(parts[1:]...)
+		return filepath.Join(parts[2:]...)
 	}
 
 	return path
