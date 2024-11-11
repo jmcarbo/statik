@@ -16,8 +16,9 @@ import (
 )
 
 var (
-	ADir = flag.String("dir", "public", "directory to serve")
-	SPA  = flag.Bool("spa", false, "single page application mode")
+	ADir        = flag.String("dir", "public", "directory to serve")
+	SPA         = flag.Bool("spa", false, "single page application mode")
+	MultiTenant = flag.Bool("multi-tenant", false, "multi tenant mode")
 )
 
 func init() {
@@ -32,6 +33,18 @@ func init() {
 			log.Fatalf("Error adding MIME type for %s: %v", ext, err)
 		}
 	}
+}
+
+func getTenantPath(path string) string {
+	// Split the path into parts
+	parts := strings.Split(path, "/")
+
+	// If the path has at least 2 parts, the first part is the tenant
+	if len(parts) >= 1 {
+		return filepath.Join(parts[1:]...)
+	}
+
+	return path
 }
 
 func main() {
@@ -51,6 +64,10 @@ func main() {
 		staticDir = *ADir
 	}
 
+	if *MultiTenant {
+		log.Println("Multi Tenant mode enabled")
+	}
+
 	log.Printf("Serving files from %s", staticDir)
 
 	// Create a new HTML template engine with the static directory as the views folder
@@ -65,6 +82,12 @@ func main() {
 	app.Use(func(c *fiber.Ctx) error {
 		// Get the requested path
 		path := c.Path()
+
+		// Multi Tenant mode
+		if *MultiTenant {
+			path = getTenantPath(path)
+		}
+
 		// Construct the full file path
 		filePath := filepath.Join(staticDir, path)
 		log.Printf("Serving file %s", filePath)
